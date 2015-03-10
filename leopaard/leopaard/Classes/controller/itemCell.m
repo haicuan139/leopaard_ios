@@ -32,9 +32,5 @@
     }
     return self;
 }
-- (void)dealloc {
-    [_itemIcon release];
-    [_itemText release];
-    [super dealloc];
-}
+
 @end

@@ -23,9 +23,4 @@
     }
     return self;
 }
-- (void)dealloc {
-    [_imageIcon release];
-    [_itemLable release];
-    [super dealloc];
-}
 @end

@@ -10,9 +10,5 @@
 
 @implementation CustomTableViewCell
 
-- (void)dealloc {
-    [_iconImageView release];
-    [_titleLable release];
-    [super dealloc];
-}
+
 @end

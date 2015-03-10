@@ -84,9 +84,12 @@ collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 -(void)addMessageButton{
     messageHidden = NO;
     _messageView.frame = CGRectMake(0, 100 , self.view.frame.size.width, 33);
-    
     AutoScrollUILable *textLable = [[AutoScrollUILable alloc]init];//添加Lable
-    [textLable setText:@"雷迪斯按的剪头们你们号码！雷迪斯按的剪头们你们号码！雷迪斯按的剪头们你们号码！"];
+    NSString *json = [NSString stringWithContentsOfURL:[NSURL URLWithString:@"http://114.215.84.87:8080/cflb/cflb/cflbInformationControl/app_query_msg.htm"] encoding:NSUTF8StringEncoding error:nil];
+    SBJsonParser    *parser     = [[SBJsonParser alloc] init];
+    NSDictionary    *rootDic    = [parser objectWithString:json error:nil];
+    NSString *msg = [rootDic objectForKey:@"val"];
+    [textLable setText:msg];
     textLable.frame = CGRectMake(5, 0, self.view.frame.size.width*2, 33);
     textLable.textColor = [UIColor colorWithHexString:@"#333333"];
     [textLable setFont:[UIFont fontWithName:nil size:13]];
@@ -96,22 +99,25 @@ collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     [self.collectionView reloadData];
 }
 -(void)addHeaderScrollView{
-    //测试数据
-    
+
     UIView *view = [[UIView alloc]init];
-    view.backgroundColor = [UIColor greenColor];
     view.frame = CGRectMake(0, 0, self.view.frame.size.width, 100);
-    UIImageView *image = [[UIImageView alloc]initWithFrame:view.frame];
-    [image setImage: [UIImage imageNamed:@"test.jpg"]];
-    UIImageView *image1 = [[UIImageView alloc]initWithFrame:view.frame];
-    [image1 setImage:[UIImage imageNamed:@"test2.jpg"]];
-    NSArray *views = [[NSArray alloc]initWithObjects:image,image1, nil];
-    
-    //TODO:添加可以轮播的ScrollView
+    NSString *json = [[NSString alloc]initWithContentsOfURL:[NSURL URLWithString:@"http://114.215.84.87:8080/cflb/cflb/cflbInformationControl/app_query_img.htm"] encoding:NSUTF8StringEncoding error:nil];
+    SBJsonParser *parser = [[SBJsonParser alloc]init];
+    NSArray *images = [parser objectWithString:json];
+    NSMutableArray *views = [[NSMutableArray alloc]init];
+    for (int i = 0; i < images.count; i++) {
+        UIImageView *imageView = [[UIImageView alloc]init];
+        imageView.frame = view.frame;
+        NSDictionary *dic = [images objectAtIndex:i];
+        NSURL *url = [NSURL URLWithString:[dic objectForKey:@"i_save_path"]];
+        [imageView sd_setImageWithURL:url];
+        [views addObject:imageView];
+    }
     [self.collectionView addSubview:view];
     _autoScrollview = [[CycleScrollView alloc] initWithFrame:view.frame animationDuration:2];
     _autoScrollview.fetchContentViewAtIndex = ^UIView *(NSInteger pageIndex){
-        
+
         return views[pageIndex];
     };
     _autoScrollview.totalPagesCount = ^NSInteger(void){
@@ -160,11 +166,7 @@ collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     }];
     [self.collectionView reloadData];
 }
--(void)dealloc{
-    [super dealloc];
-//    [_currentData release];
-//    [_rightItem release];
-}
+
 -(void)actionRightItemClick:(id)sender{
         [self pushViewControllerWithStorboardName:@"login" sid:@"login" hiddenTabBar:YES];
 }
@@ -172,7 +174,6 @@ collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UIStoryboard* st = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
     UIViewController *controller = [st instantiateViewControllerWithIdentifier:id];
     controller.hidesBottomBarWhenPushed = hidden;
-    [controller retain];
     [self.navigationController pushViewController:controller animated:YES];
 }
 -(void)execute:(NSNotification *)notification{

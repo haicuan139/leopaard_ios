@@ -37,7 +37,6 @@
     UIStoryboard* st = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
     UIViewController *controller = [st instantiateViewControllerWithIdentifier:id];
     controller.hidesBottomBarWhenPushed = hidden;
-    [controller retain];
     [self.navigationController pushViewController:controller animated:YES];
 
 }

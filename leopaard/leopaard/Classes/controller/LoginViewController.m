@@ -90,17 +90,7 @@
 
 
 
-- (void)dealloc {
-    [_login_button release];
-    [_login_username release];
-    [_login_password release];
-    [_login_back release];
-    [_login_lable_1 release];
-    [_login_lable_2 release];
-    [_login_lable_3 release];
-    [_rootScrollView release];
-    [super dealloc];
-}
+
 - (IBAction)backAction:(id)sender {
 
     self.navigationController.navigationBarHidden = NO;

@@ -70,16 +70,11 @@
     UIStoryboard* st = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
     UIViewController *controller = [st instantiateViewControllerWithIdentifier:id];
     controller.hidesBottomBarWhenPushed = hidden;
-    [controller retain];
     [self.navigationController pushViewController:controller animated:YES];
     
 }
 
-- (void)dealloc {
-    [super dealloc];
-    [_currentData release];
-    [self.table release];
-}
+
 
 
 - (CGFloat) gridView:(UIGridView *)grid widthForColumnAt:(int)columnIndex

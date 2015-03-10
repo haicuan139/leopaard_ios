@@ -18,6 +18,7 @@
 #import "ItemCellCollectionViewCell.h"
 #import "CycleScrollView.h"
 #import "AutoScrollUILable.h"
+#import "UIImageView+WebCache.h"
 @interface Tab1ViewController_v3 : UICollectionViewController
 {
     BOOL messageHidden;
